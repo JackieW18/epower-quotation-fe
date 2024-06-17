@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const initialState = {
     data: {
@@ -36,10 +37,10 @@ const res = JSON.stringify({
         }
 
     },
-    "options": [
+    "optionsCategories": [
         {
             "name": "Mast",
-            "choices": [
+            "options": [
                 {
                     "description": "Triplex Mast, Lifting Height 4350mm",
                     "specification": "Triplex Mast, Lifting Height 4350mm",
@@ -59,7 +60,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Battery",
-            "choices": [
+            "options": [
                 {
                     "description": "150ah Lithium Battery",
                     "specification": "150ah",
@@ -74,7 +75,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Charger",
-            "choices": [
+            "options": [
                 {
                     "description": "Charger 48V/50A (On-board, Single phase, 15A plug) ",
                     "specification": "48V/50A, On-board, Single phase, 15A plug",
@@ -89,7 +90,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Sideshift",
-            "choices": [
+            "options": [
                 {
                     "description": "Integrated Sideshift",
                     "specification": "Integrated Sideshift",
@@ -109,7 +110,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Tyres",
-            "choices": [
+            "options": [
                 {
                     "description": "Solid Tyre",
                     "specification": "Solid tyre",
@@ -130,7 +131,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Forks",
-            "choices": [
+            "options": [
                 {
                     "description": "1070mm Tyne",
                     "specification": "1070mm*100m*40mm",
@@ -165,7 +166,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Safety Light",
-            "choices": [
+            "options": [
                 {
                     "description": "Standard",
                     "specification": "Standard",
@@ -185,10 +186,11 @@ const res = JSON.stringify({
         },
         {
             "name": "Rear Light",
-            "choices": [
+            "options": [
                 {
                     "description": "Standard",
-                    "specification": "Standard"
+                    "specification": "Standard",
+                    "price": 0
                 },
                 {
                     "description": "Rear Working Lights",
@@ -199,7 +201,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Attached Piping",
-            "choices": [
+            "options": [
                 {
                     "description": "3 Spool",
                     "specification": "3 Spool",
@@ -214,7 +216,7 @@ const res = JSON.stringify({
         },
         {
             "name": "MCV",
-            "choices": [
+            "options": [
                 {
                     "description": "3 Spool & Lever",
                     "specification": "3 Spool & Lever",
@@ -229,7 +231,7 @@ const res = JSON.stringify({
         },
         {
             "name": "OHG",
-            "choices": [
+            "options": [
                 {
                     "description": "Standard",
                     "specification": "Standard",
@@ -249,7 +251,7 @@ const res = JSON.stringify({
         },
         {
             "name": "Fleet Management",
-            "choices": [
+            "options": [
                 {
                     "description": "Fleet Management (1 yr subscription)",
                     "specification": "Fleet Management (1 yr subscription)",
@@ -286,7 +288,7 @@ const modelSlice = createSlice({
     reducers: {
         changeSelection(state, action) {
             console.log(action.payload)
-            state.data.options[action.payload.optionsIndex].selected = action.payload.index
+            state.data.optionsCategories[action.payload.optionsCategoryIndex].selected = action.payload.index
         }
     },
     extraReducers: (builder) => {
@@ -294,7 +296,7 @@ const modelSlice = createSlice({
             state.loading = true
         });
         builder.addCase(getModelByCode.fulfilled, (state, action) => {
-            console.log("complete", action.payload)
+            // console.log("complete", action.payload)
             state.data = action.payload
             state.loading = false
         });
@@ -306,8 +308,8 @@ export const getModelByCode = createAsyncThunk(
     async (modelCode) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = JSON.parse(res);
-        
-        response.options.map((option) => {
+
+        response.optionsCategories.map((option) => {
             option.selected = 0
         })
         response.modelCode = modelCode
@@ -316,7 +318,7 @@ export const getModelByCode = createAsyncThunk(
 )
 
 export const {
-    changeSelection,
+    changeSelection
 } = modelSlice.actions
 
 export default modelSlice.reducer

@@ -2,61 +2,6 @@ import React from "react";
 import Page from "../component/Page"
 import { useSelector } from "react-redux";
 
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-
-  // These options are needed to round to whole numbers if that's what you want.
-  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-});
-
-const Header = () => {
-  return (
-    <div>
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-col ">
-          <img
-            className="w-[8.47cm] h-[0.45cm] pb-[2px]"
-            src="/header-title.png"
-          />
-          <div className="text-[10px] text-left">
-            <p>
-              {"ABN: 56 673 631 242"}
-            </p>
-            <p>
-              {"1800 997 167"}
-            </p>
-            <p>
-              {"www.epowerforklift.com.au"}
-            </p>
-            <p>
-              {"17 Crompton Way, Dandenong South VIC 3175"}
-            </p>
-          </div>
-
-        </div>
-        <img
-          className="h-[1.6cm] w-[2.38cm] "
-          src="/header-logo.png"
-        />
-      </div>
-      <div className="mt-[0.2cm] h-[1px] bg-[#C4261A]" />
-    </div>
-  )
-}
-
-function Footer({ pageNumber }) {
-  return (
-    <div className="flex flex-row justify-between text-[10px]">
-      <p>
-        {`QR030524A`}
-      </p>
-      <p>{`${pageNumber}`}</p>
-    </div>
-  )
-}
-
 function Quotation({ printRef, showPreview }) {
   const information = useSelector((state) => state.information)
   const model = useSelector((state) => state.model)
@@ -65,7 +10,69 @@ function Quotation({ printRef, showPreview }) {
   const termsConditionLineStyle = `flex flex-row pb-4`
   const termsConditionTitleStyle = `w-[24%] font-bold`
   const inputLineStyle = `w-[50%] h-[1px] bg-black mt-auto`
-  console.log(model)
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+  
+  const Header = () => {
+    return (
+      <div>
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-col ">
+            <img
+              className="w-[8.47cm] h-[0.45cm] pb-[2px]"
+              src="/header-title.png"
+            />
+            <div className="text-[10px] text-left">
+              <p>
+                {"ABN: 56 673 631 242"}
+              </p>
+              <p>
+                {"1800 997 167"}
+              </p>
+              <p>
+                {"www.epowerforklift.com.au"}
+              </p>
+              <p>
+                {"17 Crompton Way, Dandenong South VIC 3175"}
+              </p>
+            </div>
+  
+          </div>
+          <img
+            className="h-[1.6cm] w-[2.38cm] "
+            src="/header-logo.png"
+          />
+        </div>
+        <div className="mt-[0.2cm] h-[1px] bg-[#C4261A]" />
+      </div>
+    )
+  }
+  
+  function Footer({ pageNumber }) {
+    return (
+      <div className="flex flex-row justify-between text-[10px]">
+        <p>
+          {`QR030524A`}
+        </p>
+        <p>{`${pageNumber}`}</p>
+      </div>
+    )
+  }
+  
+  function getUpgrades(){
+    return model.data.optionsCategories.filter((optionsCategory) => optionsCategory.selected != 0)
+  }
+
+  function getTotalPrice(){
+    return model.data.optionsCategories.reduce((partialSum, optionsCategory) => partialSum + optionsCategory.options[optionsCategory.selected].price, model.data.model.price)
+  }
 
   return (
     <div id="quotation-document" ref={printRef} className={`flex flex-col mx-auto w-[21cm] font-sans text-[12.5px] ${showPreview ? `gap-6` : ``}`}>
@@ -172,11 +179,13 @@ function Quotation({ printRef, showPreview }) {
 
           <div className="flex p-1">
             <table className="table-fixed w-full">
-              <tr>
-                <th className="text-left">{`Type`}</th>
-                <th className="text-center">{`Make & Model`}</th>
-                <th className="text-right">{`Estimated Price (Excl. GST)`}</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th className="text-left">{`Type`}</th>
+                  <th className="text-center">{`Make & Model`}</th>
+                  <th className="text-right">{`Estimated Price (Excl. GST)`}</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
                   <td className="text-left">{model.data.model.type}</td>
@@ -188,6 +197,22 @@ function Quotation({ printRef, showPreview }) {
                   <td className="text-center font-bold">{`Optional Items`}</td>
                   <td></td>
                 </tr>
+                {getUpgrades().map((optionsCategory) => {
+                  const price = optionsCategory.options[optionsCategory.selected].price
+                  return(
+                    <tr key={optionsCategory.name}>
+                      <td className="text-left">{`${optionsCategory.name} ${price > 0 ? 'Upgrade' : (price < 0 ? 'Downgrade': 'Change')}`}</td>
+                      <td className="text-center">{`${optionsCategory.options[optionsCategory.selected].description}`}</td>
+                      <td className="text-right">{`AUD ${formatter.format(price)}`}</td>
+                    </tr>
+                  )
+                })}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td className="text-right font-bold">{`Total: AUD ${formatter.format(getTotalPrice())}`}</td>
+                </tr>
+                
               </tbody>
             </table>
           </div>
@@ -371,6 +396,7 @@ function Quotation({ printRef, showPreview }) {
         <Footer pageNumber={3} />
       </Page>
 
+      {/* Page 4 */}
       <Page>
         <Header />
         <div className={`pt-3 px-2 text-left text-black flex-1`}>

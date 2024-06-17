@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInformationState } from '../../store/informationSlice';
 import { getModelByCode, changeSelection } from '../../store/modelSlice';
 import QuotationModal from '../../component/QuotationModal';
+import { getAllModels } from '../../store/modelListSlice';
 
 
 function Options() {
@@ -17,6 +18,7 @@ function Options() {
 
   useEffect(() => {
     dispatch(getModelByCode(modelCode))
+    dispatch(getAllModels())
   }, []);
 
   const inputComponent = (k) => {
@@ -29,23 +31,21 @@ function Options() {
     )
   }
 
-  const selectionComponent = (options, optionsIndex) => {
-    const optionsList = options.choices
+  const selectionComponent = (optionsCategory, optionsCategoryIndex) => {
+    const optionsList = optionsCategory.options
     return (
-      <div className="flex items-center justify-center w-[50%] p-1" key={optionsIndex}>
-        <div className='min-w-[200px]'>
-          <label>{`${options.name}:`}</label>
-        </div>
+      <div className="flex flex-col items-center w-full lg:w-[50%] p-1 gap-4" key={optionsCategoryIndex}>
+        <label className='text-left font-bold'>{`${optionsCategory.name}:`}</label>
         {
           optionsList.length == 1
             ?
             (
-              <span>{optionsList[0].description}</span>
+              <span className='w-[350px] text-left text-sm p-2.5'>{optionsList[0].description}</span>
             )
             :
             (
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 w-[350px]"
-                onChange={(e)=>dispatch(changeSelection({optionsIndex, index: parseInt(e.target.value)}))}>
+                onChange={(e) => dispatch(changeSelection({ optionsCategoryIndex, index: parseInt(e.target.value) }))}>
 
                 {optionsList.map((option, index) => {
                   return (
@@ -55,6 +55,7 @@ function Options() {
               </select>
             )
         }
+        <p>{`price: ${optionsList[optionsCategory.selected].price}`}</p>
       </div>
     )
   }
@@ -85,14 +86,14 @@ function Options() {
           }
         </div>
 
-        <h3>{`1111${model.data.options[0].choices.selected}`}</h3>
+        <h3>{`1111${model.data.optionsCategories[0].selected}`}</h3>
 
         <h3 className='text-3xl'>{`Model options`}</h3>
         <div className='flex flex-wrap w-full py-4'>
           {
-            model.data.options.map((options, optionsIndex) => {
+            model.data.optionsCategories.map((optionsCategory, optionsCategoryIndex) => {
               return (
-                selectionComponent(options, optionsIndex)
+                selectionComponent(optionsCategory, optionsCategoryIndex)
               )
             })
           }

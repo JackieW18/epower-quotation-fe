@@ -42,7 +42,7 @@ const optionsSlice = createSlice({
     reducers: {
         changeSelection(state, action) {
             console.log(action.payload)
-            state.data.category[action.payload.categoryIndex].selected = action.payload.index
+            state.data.Categories[action.payload.CategoriesIndex].selected = action.payload.index
         }
     },
     extraReducers: (builder) => {
@@ -61,7 +61,7 @@ export const getOptions = createAsyncThunk(
     async (modelCode) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = JSON.parse(response);
-        response.category.map((option) => {
+        response.Categories.map((option) => {
             option.selected = 0
         })
         return response
