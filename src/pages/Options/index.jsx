@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { setInformationState } from '../../store/informationSlice';
-import { getModelByCode, changeSelection } from '../../store/modelSlice';
+import { setInformationState } from '../../store/SaleInformationSlice';
+import { getModelByCode, changeSelection } from '../../store/ModelSlice';
 import QuotationModal from '../../component/QuotationModal';
-import { getAllModels } from '../../store/modelListSlice';
+import { getAllModels } from '../../store/ModelListSlice';
 
 
 function Options() {

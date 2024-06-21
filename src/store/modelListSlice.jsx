@@ -7,7 +7,7 @@ const initialState = {
     loading: true
 }
 
-const modelSlice = createSlice({
+const ModelListSlice = createSlice({
     name: 'model',
     initialState,
     reducers: {
@@ -22,6 +22,14 @@ const modelSlice = createSlice({
             state.data = action.payload
             state.loading = false
         });
+        builder.addCase(getModelsByCategoryID.pending, (state) =>{
+            state.loading = true
+        });
+        builder.addCase(getModelsByCategoryID.fulfilled, (state, action) => {
+            console.log("complete", action.payload)
+            state.data = action.payload
+            state.loading = false
+        });
     }
 })
 
@@ -29,34 +37,37 @@ export const getAllModels = createAsyncThunk(
     "model/getAllModels",
     async () => {
         return await axios
-        .get('http://localhost:5000/Models')
-        .then(res =>{
-            console.log(res)
-            return res.data
-        })
-        .catch(err => {
-            console.log(err)
-            return initialState
-        })
+            .get(`${import.meta.env.VITE_API_URL}/Models`)
+            .then(res => {
+                console.log(res)
+                return res.data
+            })
+            .catch(err => {
+                console.log(err)
+                return initialState
+            })
     }
 )
 
-export const getModelsByType = createAsyncThunk(
-    "model/getModelsByType",
-    async (modelCode) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const response = JSON.parse(res);
+export const getModelsByCategoryID = createAsyncThunk(
+    "model/getModelsByCategoryID",
+    async (categoryID) => {
+        return await axios
+            .get(`${import.meta.env.VITE_API_URL}/Models/Category/${categoryID}`)
+            .then(res => {
+                console.log(res)
+                return res.data
+            })
+            .catch(err => {
+                console.log(err)
+                return initialState
+            })
 
-        response.optionsCategories.map((option) => {
-            option.selected = 0
-        })
-        response.modelCode = modelCode
-        return response
     }
 )
 
 export const {
-    changeSelection
-} = modelSlice.actions
 
-export default modelSlice.reducer
+} = ModelListSlice.actions
+
+export default ModelListSlice.reducer

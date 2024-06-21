@@ -282,7 +282,7 @@ const res = JSON.stringify({
     ]
 })
 
-const modelSlice = createSlice({
+const ModelSlice = createSlice({
     name: 'model',
     initialState,
     reducers: {
@@ -319,6 +319,6 @@ export const getModelByCode = createAsyncThunk(
 
 export const {
     changeSelection
-} = modelSlice.actions
+} = ModelSlice.actions
 
-export default modelSlice.reducer
+export default ModelSlice.reducer

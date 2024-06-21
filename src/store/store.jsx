@@ -1,14 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import informationSliceReducer from './informationSlice'
-import modelSlice from './modelSlice'
-import modelListSlice from './modelListSlice'
+import SaleInformationSliceReducer from './SaleInformationSlice'
+import ModelReducer from './ModelSlice'
+import ModelListReducer from './ModelListSlice'
+import ModelCategoryReducer from './ModelCategorySlice'
 
 const store = configureStore({
   reducer: {
-    information: informationSliceReducer,
-    model: modelSlice,
-    modelList: modelListSlice
+    information: SaleInformationSliceReducer,
+    model: ModelReducer,
+    modelList: ModelListReducer,
+    modelCategory: ModelCategoryReducer
   }
 })
 

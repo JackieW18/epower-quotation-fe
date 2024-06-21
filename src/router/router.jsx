@@ -7,8 +7,8 @@ const Router = () => {
   return (
     <Routes>
       <Route key={"home"} path={`/`} element={<Models />} />
-      <Route key={"SelectModel"} path={`/Models`} element={<Models />} />
-      <Route key={"Option"} path={`/Models/:modelCode`} element={<Options />} />
+      <Route key={"SelectModel"} path={`/quotation`} element={<Models />} />
+      <Route key={"Option"} path={`/quotation/:modelCode`} element={<Options />} />
     </Routes>
   );
 };
