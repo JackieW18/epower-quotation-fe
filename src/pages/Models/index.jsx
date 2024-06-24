@@ -4,24 +4,9 @@ import { Link } from 'react-router-dom'
 import { getModelCategories } from '../../store/ModelCategorySlice'
 import { getModelsByCategoryID } from '../../store/ModelListSlice'
 
-const data = {
-  "model":
-    [
-      {
-        "code": "EFL181",
-      },
-      {
-        "code": "EFL253",
-      },
-      {
-        "code": "CQE15S",
-      },
-    ]
-}
-
 function Models() {
-  const [model, setModel] = useState(null)
-  const [categoryID, setCategoryID] = useState(null)
+  const [model, setModel] = useState('')
+  const [categoryID, setCategoryID] = useState('')
 
   const categories = useSelector((state) => state.modelCategory)
   const modelList = useSelector((state) => state.modelList)
@@ -32,7 +17,7 @@ function Models() {
   }, [])
 
   useEffect(() => {
-    if (categoryID) {
+    if(categoryID != ''){
       dispatch(getModelsByCategoryID(categoryID))
     }
   }, [categoryID])
@@ -41,12 +26,12 @@ function Models() {
     <div className="main">
       {
         categories.loading ? (
-          <></>
+          <div>Loading</div>
         ) : (
           <div>
             <label>{"Categorys:"}</label>
-            <select name="modelCategory" id="modelCategory" onChange={(e) => setCategoryID(e.target.value)} value={categoryID==null ? '': categories.data[categoryID].categoryID}>
-              <option value='' hidden>{`Select a category`}</option>
+            <select name="modelCategory" id="modelCategory" onChange={(e) => setCategoryID(e.target.value)} value={categoryID}>
+              <option value={''} hidden>{`Select Category`}</option>
               {categories.data.map((category, index) => {
                 return (
                   <option key={index} value={category.categoryID}>{category.categoryName}</option>
@@ -58,14 +43,14 @@ function Models() {
       }
 
       {
-        categoryID == null || modelList.loading ? (
+        categoryID == 0 || modelList.loading ? (
           <></>
         ) : (
           <div>
             <label>{"Model:"}</label>
-            <select name="model" id="model" onChange={(e) => {setModel(e.target.value)}}>
+            <select name="model" id="model" onChange={(e) => { setModel(e.target.value) }} value={model}>
+              <option value={''} hidden>{`Select Model`}</option>
               {
-
                 modelList.data.map((model, index) => {
                   return (
                     <option key={index} value={model.modelCode}>{model.modelCode}</option>

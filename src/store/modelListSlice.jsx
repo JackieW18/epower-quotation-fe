@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = {
-    data: {
-    },
-    loading: true
+    data: {},
+    loading: true,
+    error: ""
 }
 
 const ModelListSlice = createSlice({
-    name: 'model',
+    name: 'modelList',
     initialState,
     reducers: {
 
@@ -22,20 +22,27 @@ const ModelListSlice = createSlice({
             state.data = action.payload
             state.loading = false
         });
+        builder.addCase(getAllModels.rejected, (state, action) => {
+            state.loading=true
+            state.error=action.payload
+        });
         builder.addCase(getModelsByCategoryID.pending, (state) =>{
             state.loading = true
         });
         builder.addCase(getModelsByCategoryID.fulfilled, (state, action) => {
-            console.log("complete", action.payload)
             state.data = action.payload
             state.loading = false
+        });
+        builder.addCase(getModelsByCategoryID.rejected, (state, action) => {
+            state.loading=true
+            state.error=action.payload
         });
     }
 })
 
 export const getAllModels = createAsyncThunk(
     "model/getAllModels",
-    async () => {
+    async (param, thunkAPI) => {
         return await axios
             .get(`${import.meta.env.VITE_API_URL}/Models`)
             .then(res => {
@@ -43,24 +50,21 @@ export const getAllModels = createAsyncThunk(
                 return res.data
             })
             .catch(err => {
-                console.log(err)
-                return initialState
+                return thunkAPI.rejectWithValue(err.message)
             })
     }
 )
 
 export const getModelsByCategoryID = createAsyncThunk(
     "model/getModelsByCategoryID",
-    async (categoryID) => {
+    async (categoryID, thunkAPI) => {
         return await axios
-            .get(`${import.meta.env.VITE_API_URL}/Models/Category/${categoryID}`)
+            .get(`${import.meta.env.VITE_API_URL}/ModelCategories/${categoryID}`)
             .then(res => {
-                console.log(res)
                 return res.data
             })
             .catch(err => {
-                console.log(err)
-                return initialState
+                return thunkAPI.rejectWithValue(err.message)
             })
 
     }

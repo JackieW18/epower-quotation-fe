@@ -71,7 +71,7 @@ function Quotation({ printRef, showPreview }) {
   }
 
   function getTotalPrice(){
-    return model.data.optionsCategories.reduce((partialSum, optionsCategory) => partialSum + optionsCategory.options[optionsCategory.selected].price, model.data.model.price)
+    return model.data.optionsCategories.reduce((partialSum, optionsCategory) => partialSum + parseFloat(optionsCategory.options[optionsCategory.selected].price), parseFloat(model.data.price))
   }
 
   return (
@@ -102,7 +102,7 @@ function Quotation({ printRef, showPreview }) {
             {"Recommendation (Standard Option)"}
           </p>
 
-          <div className="block p-1 pb-5">
+          <div className="block p-1 pb-5 min-h-[300px]">
             <div className=" gap-4 float-none">
               <div>
                 <img
@@ -116,7 +116,7 @@ function Quotation({ printRef, showPreview }) {
                   {`Make & Model`}
                 </p>
                 <p className={`pl-2 flex-1 py-1`}>
-                  {`${model.data.model.modelCode}`}
+                  {`${model.data.modelCode}`}
                 </p>
               </div>
 
@@ -125,7 +125,7 @@ function Quotation({ printRef, showPreview }) {
                   {`Type`}
                 </p>
                 <p className={`pl-2 flex-1 py-1`}>
-                  {`${model.data.model.type}`}
+                  {`${model.data.type}`}
                 </p>
               </div>
 
@@ -134,7 +134,7 @@ function Quotation({ printRef, showPreview }) {
                   {`Load Capacity`}
                 </p>
                 <p className={`pl-2 flex-1 py-1`}>
-                  {`${model.data.model.loadCapacity}`}
+                  {`${model.data.loadCapacity}`}
                 </p>
               </div>
 
@@ -143,7 +143,7 @@ function Quotation({ printRef, showPreview }) {
                   {`Load Centre Distance`}
                 </p>
                 <p className={`pl-2 flex-1 py-1`}>
-                  {`${model.data.model.loadCenterDistance}`}
+                  {`${model.data.loadCenterDistance}`}
                 </p>
               </div>
 
@@ -152,19 +152,18 @@ function Quotation({ printRef, showPreview }) {
                   {`Energy Type`}
                 </p>
                 <p className={`pl-2 flex-1 py-1`}>
-                  {`${model.data.model.energyType}`}
+                  {`${model.data.energyType}`}
                 </p>
               </div>
-
               {
-                model.data.model.other.fields.map((field, index) => {
+                model.data.standardConfigurations.map((configuration, index) => {
                   return (
                     <div key={index} className={`flex flex-row flex-wrap`}>
                       <p className={`w-[140px] border-r-2 py-1`}>
-                        {`${field}`}
+                        {`${configuration.configurationType}`}
                       </p>
                       <p className={`pl-2 flex-1 py-1`}>
-                        {`${model.data.model.other.values[index]}`}
+                        {`${configuration.configurationValue}`}
                       </p>
                     </div>
                   )
@@ -188,9 +187,9 @@ function Quotation({ printRef, showPreview }) {
               </thead>
               <tbody>
                 <tr>
-                  <td className="text-left">{model.data.model.type}</td>
-                  <td className="text-center">{model.data.model.modelCode}</td>
-                  <td className="text-right">{`AUD ${formatter.format(model.data.model.price)}`}</td>
+                  <td className="text-left">{model.data.type}</td>
+                  <td className="text-center">{model.data.modelCode}</td>
+                  <td className="text-right">{`AUD ${formatter.format(model.data.price)}`}</td>
                 </tr>
                 <tr>
                   <td></td>

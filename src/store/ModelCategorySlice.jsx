@@ -2,16 +2,15 @@ import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/too
 import axios from 'axios'
 
 const initialState = {
-    data: {
-    },
-    loading: true
+    data: {},
+    loading: true,
+    error: ""
 }
 
 const ModelCategorySlice = createSlice({
-    name: 'model',
+    name: 'modelCategory',
     initialState,
     reducers: {
-
     },
     extraReducers: (builder) => {
         builder.addCase(getModelCategories.pending, (state) => {

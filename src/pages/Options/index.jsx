@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInformationState } from '../../store/SaleInformationSlice';
 import { getModelByCode, changeSelection } from '../../store/ModelSlice';
 import QuotationModal from '../../component/QuotationModal';
-import { getAllModels } from '../../store/ModelListSlice';
 
 
 function Options() {
@@ -18,7 +17,6 @@ function Options() {
 
   useEffect(() => {
     dispatch(getModelByCode(modelCode))
-    dispatch(getAllModels())
   }, []);
 
   const inputComponent = (k) => {
@@ -55,7 +53,7 @@ function Options() {
               </select>
             )
         }
-        <p>{`price: ${optionsList[optionsCategory.selected].price}`}</p>
+        <p>{`price: $${optionsList[optionsCategory.selected].price}`}</p>
       </div>
     )
   }
@@ -85,8 +83,6 @@ function Options() {
             })
           }
         </div>
-
-        <h3>{`1111${model.data.optionsCategories[0].selected}`}</h3>
 
         <h3 className='text-3xl'>{`Model options`}</h3>
         <div className='flex flex-wrap w-full py-4'>

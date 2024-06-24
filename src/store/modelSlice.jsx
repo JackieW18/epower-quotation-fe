@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = {
-    data: {
-    },
-    loading: true
+    data: {},
+    loading: true,
+    error: ""
 }
 
 const res = JSON.stringify({
@@ -287,8 +287,7 @@ const ModelSlice = createSlice({
     initialState,
     reducers: {
         changeSelection(state, action) {
-            console.log(action.payload)
-            state.data.optionsCategories[action.payload.optionsCategoryIndex].selected = action.payload.index
+            state.data.options[action.payload.optionsCategoryIndex].selected = action.payload.index
         }
     },
     extraReducers: (builder) => {
@@ -306,6 +305,15 @@ const ModelSlice = createSlice({
 export const getModelByCode = createAsyncThunk(
     "model/getModelByCode",
     async (modelCode) => {
+        return await axios
+            .get(`${import.meta.env.VITE_API_URL}/Models/${modelCode}`)
+            .then(res => {
+                console.log(res.data)
+                return res.data
+            })
+            .catch(err => {
+                return thunkAPI.rejectWithValue(err.message)
+            })
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = JSON.parse(res);
 
