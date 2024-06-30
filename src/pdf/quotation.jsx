@@ -156,14 +156,14 @@ function Quotation({ printRef, showPreview }) {
                 </p>
               </div>
               {
-                model.data.standardConfigurations.map((configuration, index) => {
+                model.data.standardOptions.map((standardOption, index) => {
                   return (
                     <div key={index} className={`flex flex-row flex-wrap`}>
                       <p className={`w-[140px] border-r-2 py-1`}>
-                        {`${configuration.configurationType}`}
+                        {`${standardOption.standardOptionType}`}
                       </p>
                       <p className={`pl-2 flex-1 py-1`}>
-                        {`${configuration.configurationValue}`}
+                        {`${standardOption.standardOptionValue}`}
                       </p>
                     </div>
                   )

@@ -7,31 +7,31 @@ const initialState = {
     error: ""
 }
 
-const ModelCategorySlice = createSlice({
-    name: 'modelCategory',
+const StandardOptionTypesSlice = createSlice({
+    name: 'StandardOptionTypes',
     initialState,
     reducers: {
     },
     extraReducers: (builder) => {
-        builder.addCase(getModelCategories.pending, (state) => {
+        builder.addCase(getStandardOptionTypes.pending, (state) => {
             state.loading = true
         });
-        builder.addCase(getModelCategories.fulfilled, (state, action) => {
+        builder.addCase(getStandardOptionTypes.fulfilled, (state, action) => {
             console.log(action.payload)
             state.data = action.payload
             state.loading = false
         });
-        builder.addCase(getModelCategories.rejected, (state, action) =>{
+        builder.addCase(getStandardOptionTypes.rejected, (state, action) =>{
             console.log(action.payload)
         })
     }
 })
 
-export const getModelCategories = createAsyncThunk(
-    "model/getModelCategories",
+export const getStandardOptionTypes = createAsyncThunk(
+    "standardOptions/getStandardOptionTypes",
     async (_, thunkAPI) => {
         return await axios
-        .get(`${import.meta.env.VITE_API_URL}/ModelCategories`)
+        .get(`${import.meta.env.VITE_API_URL}/StandardOption`)
         .then(res =>{
             return res.data
         })
@@ -43,6 +43,6 @@ export const getModelCategories = createAsyncThunk(
 )
 
 export const {
-} = ModelCategorySlice.actions
+} = StandardOptionTypesSlice.actions
 
-export default ModelCategorySlice.reducer
+export default StandardOptionTypesSlice.reducer

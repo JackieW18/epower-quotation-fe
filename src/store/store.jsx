@@ -4,13 +4,15 @@ import SaleInformationSliceReducer from './SaleInformationSlice'
 import ModelReducer from './ModelSlice'
 import ModelListReducer from './ModelListSlice'
 import ModelCategoryReducer from './ModelCategorySlice'
+import StandardOptionTypesSlice from './StandardOptionTypesSlice'
 
 const store = configureStore({
   reducer: {
     information: SaleInformationSliceReducer,
     model: ModelReducer,
     modelList: ModelListReducer,
-    modelCategory: ModelCategoryReducer
+    modelCategory: ModelCategoryReducer,
+    standardOptionTypes: StandardOptionTypesSlice
   }
 })
 

@@ -42,7 +42,7 @@ const ModelListSlice = createSlice({
 
 export const getAllModels = createAsyncThunk(
     "model/getAllModels",
-    async (param, thunkAPI) => {
+    async (_, thunkAPI) => {
         return await axios
             .get(`${import.meta.env.VITE_API_URL}/Models`)
             .then(res => {
