@@ -43,7 +43,7 @@ function Options() {
             :
             (
               <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 w-[350px]"
-                onChange={(e) => dispatch(changeSelection({ optionsCategoryIndex, index: parseInt(e.target.value) }))}>
+                value={optionsCategory.selected} onChange={(e) => dispatch(changeSelection({ optionsCategoryIndex, optionIndex: parseInt(e.target.value) }))}>
 
                 {optionsList.map((option, index) => {
                   return (
@@ -53,7 +53,7 @@ function Options() {
               </select>
             )
         }
-        <p>{`price: $${optionsList[optionsCategory.selected].price}`}</p>
+        <p>{optionsList[optionsCategory.selected].displayPrice? `Price: ${optionsList[optionsCategory.selected].displayPrice}`: `Price: $${optionsList[optionsCategory.selected].price}`}</p>
       </div>
     )
   }

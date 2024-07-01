@@ -67,7 +67,7 @@ function Quotation({ printRef, showPreview }) {
   }
   
   function getUpgrades(){
-    return model.data.optionsCategories.filter((optionsCategory) => optionsCategory.selected != 0)
+    return model.data.optionsCategories.filter((optionsCategory) => !optionsCategory.options[optionsCategory.selected].isDefault)
   }
 
   function getTotalPrice(){
@@ -106,8 +106,8 @@ function Quotation({ printRef, showPreview }) {
             <div className=" gap-4 float-none">
               <div>
                 <img
-                  className="w-[35%] float-right"
-                  src="/forklift.png"
+                  className="h-[250px] float-right"
+                  src={`/models/${model.data.modelCode}/image.png`}
                 />
               </div>
 
@@ -199,9 +199,9 @@ function Quotation({ printRef, showPreview }) {
                 {getUpgrades().map((optionsCategory) => {
                   const price = optionsCategory.options[optionsCategory.selected].price
                   return(
-                    <tr key={optionsCategory.name}>
+                    <tr className={''} key={optionsCategory.name}>
                       <td className="text-left">{`${optionsCategory.name} ${price > 0 ? 'Upgrade' : (price < 0 ? 'Downgrade': 'Change')}`}</td>
-                      <td className="text-center">{`${optionsCategory.options[optionsCategory.selected].description}`}</td>
+                      <td className="text-center">{`${optionsCategory.options[optionsCategory.selected].onQuoteDescription}`}</td>
                       <td className="text-right">{`AUD ${formatter.format(price)}`}</td>
                     </tr>
                   )

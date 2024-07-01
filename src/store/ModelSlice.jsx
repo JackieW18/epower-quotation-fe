@@ -287,7 +287,17 @@ const ModelSlice = createSlice({
     initialState,
     reducers: {
         changeSelection(state, action) {
-            state.data.options[action.payload.optionsCategoryIndex].selected = action.payload.index
+            state.data.optionsCategories[action.payload.optionsCategoryIndex].selected = action.payload.optionIndex
+            console.log(action.payload)
+            state.data.discounts.forEach(discount => {
+                if(action.payload.optionsCategoryIndex === discount.optionsCategoryIndex){
+                    if(action.payload.optionIndex === discount.optionIndex){
+                        state.data.optionsCategories[discount.includedOptionsCategoryIndex].options[discount.includedOptionIndex].displayPrice = "Included"
+                    } else {
+                        state.data.optionsCategories[discount.includedOptionsCategoryIndex].options[discount.includedOptionIndex].displayPrice = null
+                    }
+                }
+            });
         }
     },
     extraReducers: (builder) => {
@@ -309,19 +319,13 @@ export const getModelByCode = createAsyncThunk(
             .get(`${import.meta.env.VITE_API_URL}/Models/${modelCode}`)
             .then(res => {
                 console.log(res.data)
+                const discounts = res.data.discounts
+
                 return res.data
             })
             .catch(err => {
                 return thunkAPI.rejectWithValue(err.message)
             })
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const response = JSON.parse(res);
-
-        response.optionsCategories.map((option) => {
-            option.selected = 0
-        })
-        response.modelCode = modelCode
-        return response
     }
 )
 
