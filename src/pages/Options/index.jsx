@@ -11,7 +11,7 @@ function Options() {
 
   const { modelCode } = useParams()
 
-  const information = useSelector((state) => state.information);
+  const saleInformation = useSelector((state) => state.saleInformation);
   const model = useSelector((state) => state.model);
   const dispatch = useDispatch();
 
@@ -22,9 +22,9 @@ function Options() {
   const inputComponent = (k) => {
     return (
       <div className="flex flex-col w-[50%] p-3" key={k}>
-        <label className="block mb-2 text-sm font-medium text-gray-900 text-left">{`${information.data[k].field}:`}</label>
+        <label className="block mb-2 text-sm font-medium text-gray-900 text-left">{`${saleInformation.data[k].field}:`}</label>
         <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          type='text' value={information.data[k].value} onChange={(e) => dispatch(setInformationState({ key: k, value: e.target.value }))} />
+          type='text' value={saleInformation.data[k].value} onChange={(e) => dispatch(setInformationState({ key: k, value: e.target.value }))} />
       </div>
     )
   }
@@ -76,7 +76,7 @@ function Options() {
         <h3 className='text-3xl'>{`Information`}</h3>
         <div className='flex flex-wrap w-full'>
           {
-            Object.keys(information.data).map((k) => {
+            Object.keys(saleInformation.data).map((k) => {
               return (
                 inputComponent(k)
               )
@@ -94,7 +94,8 @@ function Options() {
             })
           }
         </div>
-        <button className="bg-black text-white" onClick={() => setOpenModal(true)}>{`Generate`}</button>
+        <button className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${saleInformation.data.sales.value === ''? 'bg-blue-400 cursor-not-allowed':'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300'}`} 
+          onClick={() => setOpenModal(true)} disabled={saleInformation.data.sales.value === ''}>{`Generate`}</button>
 
         {/* <div>
         <label className='px-2'>{"Mast:"}</label>

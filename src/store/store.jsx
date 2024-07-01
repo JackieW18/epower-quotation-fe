@@ -8,7 +8,7 @@ import StandardOptionTypesSlice from './StandardOptionTypesSlice'
 
 const store = configureStore({
   reducer: {
-    information: SaleInformationSliceReducer,
+    saleInformation: SaleInformationSliceReducer,
     model: ModelReducer,
     modelList: ModelListReducer,
     modelCategory: ModelCategoryReducer,

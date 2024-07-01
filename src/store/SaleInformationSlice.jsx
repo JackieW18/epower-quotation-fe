@@ -5,6 +5,48 @@ const initialState = {
     data: {
         date: {
             field: "Date",
+            value: "",
+        },
+        client: {
+            field: "Client",
+            value: "",
+        },
+        abn: {
+            field: "ABN",
+            value: "",
+        },
+        address: {
+            field: "Address",
+            value: "",
+        },
+        name: {
+            field: "Contact Person",
+            value: "",
+        },
+        email: {
+            field: "Email",
+            value: "",
+        },
+        phone: {
+            field: "Phone",
+            value: "",
+        },
+        sales: {
+            field: "Sales",
+            value: ""
+        },
+        reference: {
+            field: "Quote Reference",
+            value: "",
+        },
+    }
+}
+
+const initialState1 = {
+    loading: false,
+    data: {
+        date: {
+            field: "Date",
             value: "03/05/2024",
         },
         client: {
@@ -44,7 +86,7 @@ const initialState = {
 
 const SaleInformationSlice = createSlice({
     name: 'information',
-    initialState: initialState,
+    initialState: initialState1,
     reducers: {
         setInformationState(state, action) {
             state.data[action.payload.key].value = action.payload.value

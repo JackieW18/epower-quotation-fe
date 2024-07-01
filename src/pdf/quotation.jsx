@@ -3,7 +3,7 @@ import Page from "../component/Page"
 import { useSelector } from "react-redux";
 
 function Quotation({ printRef, showPreview }) {
-  const information = useSelector((state) => state.information)
+  const saleInformation = useSelector((state) => state.saleInformation)
   const model = useSelector((state) => state.model)
 
   const bodyStyle = `pt-3 px-2 text-left text-black flex-1`
@@ -84,14 +84,14 @@ function Quotation({ printRef, showPreview }) {
             {"Quote Information"}
           </p>
           <div className={`pb-5 p-1`}>
-            {Object.keys(information.data).map((k) => {
+            {Object.keys(saleInformation.data).map((k) => {
               return (
                 <div key={k} className="flex flex-row py-[2px]">
                   <p className="w-[140px]">
-                    {`${information.data[k].field}:`}
+                    {`${saleInformation.data[k].field}:`}
                   </p>
                   <p className="pl-2 flex-1">
-                    {information.data[k].value}
+                    {saleInformation.data[k].value}
                   </p>
                 </div>
               )
